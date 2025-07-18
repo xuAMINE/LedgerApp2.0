@@ -86,6 +86,7 @@
                     <th>Amount</th>
                     <th>Date</th>
                     <th>With</th> <!-- Sender or Recipient -->
+                    <th>Description</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -98,6 +99,7 @@
                     </td>
                     <td th:text="${#temporals.format(transaction.timestamp, 'MMM dd, yyyy HH:mm')}"></td>
                     <td th:text="${transaction.counterparty}">--</td> <!-- Add this dynamically from backend -->
+                    <td th:text="${transaction.description}">No description</td>
                 </tr>
                 </tbody>
             </table>

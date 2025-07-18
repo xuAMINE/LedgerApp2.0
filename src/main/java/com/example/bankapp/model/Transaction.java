@@ -23,6 +23,8 @@ public class Transaction {
     private String type;
     private LocalDateTime timestamp;
 
+    private String description;
+
     @Column(name = "counterparty")
     private String counterparty;
 

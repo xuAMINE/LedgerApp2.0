@@ -59,6 +59,7 @@ public class TransactionController {
     public String transferAmount(@RequestParam Long fromAccountId,
                                  @RequestParam String toUsername,
                                  @RequestParam BigDecimal amount,
+                                 @RequestParam(required = false) String description, // <-- NEW
                                  Principal principal,
                                  Model model) {
         try {
@@ -78,7 +79,7 @@ public class TransactionController {
                     .orElseThrow(() -> new RuntimeException("Recipient has no checking account"));
 
             // Perform the transfer
-            accountService.transferAmount(fromAccount, toAccount, amount);
+            accountService.transferAmount(fromAccount, toAccount, amount, description);
 
             return "redirect:/dashboard";
 

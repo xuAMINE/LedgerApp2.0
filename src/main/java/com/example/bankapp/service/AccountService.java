@@ -51,7 +51,7 @@ public class AccountService {
                 .orElseThrow(() -> new RuntimeException("Account not found"));
     }
 
-    public void transferAmount(Account fromAccount, Account toAccount, BigDecimal amount) {
+    public void transferAmount(Account fromAccount, Account toAccount, BigDecimal amount, String description) {
         if (fromAccount.getBalance().compareTo(amount) < 0) {
             throw new RuntimeException("Insufficient funds");
         }
@@ -67,6 +67,7 @@ public class AccountService {
                 .amount(amount)
                 .timestamp(LocalDateTime.now())
                 .counterparty(toAccount.getUser().getUsername())
+                .description(description)
                 .account(fromAccount)
                 .build());
 
