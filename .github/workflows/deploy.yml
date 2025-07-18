@@ -33,10 +33,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           source: target/bankapp-0.0.1-SNAPSHOT.jar
-          target: /home/ubuntu/
-          strip_components: 0
-          overwrite: true
-          rm: false
+          target: /home/ubuntu
 
       - name: SSH into EC2 and build Docker container
         uses: appleboy/ssh-action@v0.1.10
@@ -45,26 +42,28 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Navigate to deployment directory
+            # Go to deployment dir
             cd /home/ubuntu
-
-            # Stop and remove old container
+            
+            # Remove old app and Docker artifacts
             docker stop bankapp || true
             docker rm bankapp || true
-
-            # Remove old Docker image
             docker rmi bankapp || true
-
-            # Remove old JAR file if exists
             rm -f bankapp.jar
-
-            # Rename uploaded JAR file
-            mv bankapp-0.0.1-SNAPSHOT.jar bankapp.jar
-
-            # Create Dockerfile dynamically
+            
+            # ✅ Confirm the uploaded jar exists
+            if [ -f "bankapp-0.0.1-SNAPSHOT.jar" ]; then
+              mv bankapp-0.0.1-SNAPSHOT.jar bankapp.jar
+            else
+              echo "JAR file not found! Upload may have failed."
+              exit 1
+            fi
+            
+            # Create Dockerfile
             echo -e "FROM openjdk:17-jdk-slim\nCOPY bankapp.jar app.jar\nENTRYPOINT [\"java\",\"-jar\",\"app.jar\"]" > Dockerfile
-
+            
             # Build and run
             docker build -t bankapp .
             docker run -d -p 8080:8080 --name bankapp bankapp
+
       
