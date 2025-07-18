@@ -32,8 +32,8 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: target/bankapp-0.0.1-SNAPSHOT.jar
-          target: /home/ubuntu
+          source: "target/bankapp-0.0.1-SNAPSHOT.jar"
+          target: "/home/ubuntu/"
 
       - name: SSH into EC2 and build Docker container
         uses: appleboy/ssh-action@v0.1.10
