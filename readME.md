@@ -1,3 +1,5 @@
+
+
 # 💳 BankApp
 
 A modern Java Spring Boot banking application with checking and savings accounts, transaction management, and Dockerized deployment on AWS EC2. This project supports continuous deployment via GitHub Actions and includes a clean, user-friendly frontend.
